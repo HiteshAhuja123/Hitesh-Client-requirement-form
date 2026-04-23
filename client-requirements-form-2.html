@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Website Requirements — Hitesh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ── TOKENS ── */
+:root {
+  --bg:       #0a0a0a;
+  --surface:  #111111;
+  --card:     #161616;
+  --border:   #242424;
+  --border2:  #2e2e2e;
+  --accent:   #ffffff;
+  --dim:      #888888;
+  --muted:    #555555;
+  --text:     #ededed;
+  --sub:      #a1a1a1;
+  --indigo:   #6366f1;
+  --indigo-l: rgba(99,102,241,0.12);
+  --indigo-b: rgba(99,102,241,0.35);
+  --green:    #10b981;
+  --red:      #ef4444;
+  --input-bg: #0d0d0d;
+  --radius:   10px;
+  --radius-lg:16px;
+}
+
+/* ── RESET ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NOISE TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* ── LAYOUT ── */
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px 80px;
+}
+
+/* ── HEADER ── */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
+}
+.logo {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-dot {
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:0.5; transform:scale(0.8); }
+}
+.header-link {
+  font-size: 12px;
+  color: var(--dim);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  border-radius: 6px;
+  transition: color .2s, border-color .2s;
+}
+.header-link:hover { color: var(--text); border-color: var(--border2); }
+
+/* ── HERO ── */
+.hero {
+  padding: 56px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+.hero-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero-label::before {
+  content: '';
+  display: inline-block;
+  width: 16px; height: 1px;
+  background: var(--muted);
+}
+h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.hero-desc {
+  color: var(--sub);
+  font-size: 15px;
+  max-width: 480px;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.hero-badge {
+  font-size: 12px;
+  color: var(--dim);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hero-badge span { color: var(--sub); }
+
+/* ── PROGRESS ── */
+.progress-bar {
+  height: 1px;
+  background: var(--border);
+  margin: 28px 0 0;
+  position: relative;
+}
+.progress-fill {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  background: var(--text);
+  transition: width 0.4s ease;
+  width: 0%;
+}
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'Geist Mono', monospace;
+}
+
+/* ── SECTION CARD ── */
+.section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 12px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.45s ease, transform 0.45s ease, border-color 0.2s;
+}
+.section.visible { opacity: 1; transform: translateY(0); }
+.section:focus-within { border-color: var(--border2); }
+
+.sec-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sec-num {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 3px 7px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.sec-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+/* ── FIELDS ── */
+.field { margin-bottom: 16px; }
+.field:last-child { margin-bottom: 0; }
+
+.field-label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--sub);
+  margin-bottom: 7px;
+  letter-spacing: -0.005em;
+}
+.field-label .req { color: var(--dim); }
+.field-hint {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 5px;
+  font-family: 'Geist Mono', monospace;
+}
+
+input[type=text],
+input[type=email],
+input[type=tel],
+input[type=url],
+textarea,
+select {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: 'Geist', sans-serif;
+  font-size: 14px;
+  padding: 10px 13px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+}
+input::placeholder, textarea::placeholder { color: var(--muted); }
+input:focus, textarea:focus, select:focus {
+  border-color: var(--border2);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.04);
+}
+textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
+select { cursor: pointer; }
+select option { background: #1a1a1a; }
+
+/* grid helpers */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media(max-width:520px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ── CHECKBOXES ── */
+.check-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 6px;
+}
+@media(max-width:400px) { .check-grid { grid-template-columns: 1fr 1fr; } }
+
+.chk {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 11px;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.chk:hover { border-color: var(--border2); }
+.chk.on { border-color: var(--border2); background: var(--surface); }
+.chk-box {
+  width: 16px; height: 16px;
+  border: 1px solid var(--muted);
+  border-radius: 4px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  font-size: 10px; color: transparent;
+}
+.chk.on .chk-box { background: var(--text); border-color: var(--text); color: var(--bg); }
+.chk-lbl { font-size: 12.5px; color: var(--sub); line-height: 1.3; }
+.chk.on .chk-lbl { color: var(--text); }
+
+/* ── RADIO PILLS ── */
+.pill-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill {
+  font-size: 12.5px;
+  color: var(--dim);
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 13px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s;
+}
+.pill:hover { color: var(--sub); border-color: var(--border2); }
+.pill.on { color: var(--text); border-color: var(--border2); background: var(--surface); }
+
+/* ── BUDGET GRID ── */
+.budget-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+@media(max-width:440px) { .budget-grid { grid-template-columns: 1fr 1fr; } }
+
+/* ── SUBMIT ── */
+.submit-area { margin-top: 24px; text-align: center; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--text);
+  color: var(--bg);
+  font-family: 'Geist', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 13px 36px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.btn-arrow { font-size: 16px; }
+.submit-note {
+  margin-top: 12px;
+  font-size: 11.5px;
+  color: var(--muted);
+  font-family: 'Geist Mono', monospace;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 11px 20px;
+  font-size: 13px;
+  color: var(--text);
+  z-index: 999;
+  white-space: nowrap;
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  max-width: calc(100vw - 32px);
+  white-space: normal;
+  text-align: center;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.err { border-color: rgba(239,68,68,0.4); color: #fca5a5; }
+
+/* ── SUCCESS ── */
+.success {
+  display: none;
+  text-align: center;
+  padding: 80px 20px 40px;
+}
+.success-icon { font-size: 48px; margin-bottom: 20px; }
+.success h2 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.success p { color: var(--sub); font-size: 15px; line-height: 1.7; max-width: 380px; margin: 0 auto 24px; }
+.success a {
+  font-size: 13px;
+  color: var(--dim);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1px;
+  transition: color .2s, border-color .2s;
+}
+.success a:hover { color: var(--text); border-color: var(--border2); }
+
+/* ── FOOTER ── */
+.footer {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-left { font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+.footer-right { font-size: 12px; color: var(--muted); }
+.footer-right a { color: var(--dim); text-decoration: none; }
+.footer-right a:hover { color: var(--sub); }
+
+/* ── MOBILE TWEAKS ── */
+@media(max-width:600px) {
+  .wrap { padding: 0 14px 60px; }
+  .section { padding: 18px 16px; }
+  .hero { padding: 40px 0 32px; }
+  .site-header { padding: 16px 0; }
+  .hero-meta { gap: 10px; }
+  .check-grid { grid-template-columns: 1fr 1fr; }
+  .budget-grid { grid-template-columns: 1fr 1fr; }
+  .footer { flex-direction: column; align-items: flex-start; gap: 6px; }
+}
+@media(max-width:360px) {
+  h1 { font-size: 26px; }
+  .check-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="logo">
+      <span class="logo-dot"></span>
+      Hitesh Ahuja
+    </div>
+    <a class="header-link" href="https://hitesh-portfolio-website.vercel.app" target="_blank">Portfolio ↗</a>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-label">Website Project Kickoff</p>
+    <h1>Tell me about<br/>your website.</h1>
+    <p class="hero-desc">Fill out this form so I can understand your goals, design preferences, and requirements — and build something that actually works for you.</p>
+    <div class="hero-meta">
+      <div class="hero-badge"><span>9 sections</span> · ~5 min</div>
+      <div class="hero-badge"><span>Responses sent to</span> hitesh.ahuja2293@gmail.com</div>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="prog"></div>
+    </div>
+    <div class="progress-meta">
+      <span>Completion</span>
+      <span id="pct">0%</span>
+    </div>
+  </section>
+
+  <div id="formBody">
+
+  <!-- 01 -->
+  <div class="section" id="s1">
+    <div class="sec-header">
+      <span class="sec-num">01</span>
+      <span class="sec-title">Your Information</span>
+    </div>
+    <div class="two-col">
+      <div class="field">
+        <label class="field-label">Full Name <span class="req">*</span></label>
+        <input type="text" id="f_name" placeholder="John Smith" oninput="tick()"/>
+      </div>
+      <div class="field">
+        <label class="field-label">Company / Business</label>
+        <input type="text" id="f_company" placeholder="Acme Inc. (optional)"/>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="field">
+        <label class="field-label">Email Address <span class="req">*</span></label>
+        <input type="email" id="f_email" placeholder="you@email.com" oninput="tick()"/>
+      </div>
+      <div class="field">
+        <label class="field-label">Phone / WhatsApp</label>
+        <input type="tel" id="f_phone" placeholder="+91 98765 43210"/>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Preferred communication</label>
+      <div class="pill-row" id="rg_contact">
+        <div class="pill" onclick="rSel(this,'rg_contact')">Email</div>
+        <div class="pill" onclick="rSel(this,'rg_contact')">WhatsApp</div>
+        <div class="pill" onclick="rSel(this,'rg_contact')">Phone Call</div>
+        <div class="pill" onclick="rSel(this,'rg_contact')">Video Call</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 -->
+  <div class="section">
+    <div class="sec-header">
+      <span class="sec-num">02</span>
+      <span class="sec-title">Business &amp; Project Overview</span>
+    </div>
+    <div class="field">
+      <label class="field-label">What does your business do? <span class="req">*</span></label>
+      <textarea id="f_business" placeholder="Describe your products, services, or mission..." oninput="tick()"></textarea>
+    </div>
+    <div class="field">
+      <label class="field-label">Primary goal of this website <span class="req">*</span></label>
+      <textarea id="f_goal" placeholder="e.g. generate leads, sell products, showcase portfolio..." oninput="tick()"></textarea>
+    </div>
+    <div class="field">
+      <label class="field-label">Type of website</label>
+      <div class="check-grid" id="cg_sitetype">
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Business / Corporate</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">E-Commerce / Store</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Portfolio / Personal</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Blog / News</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Landing Page</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">SaaS / Web App</span></div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Existing website URL</label>
+      <input type="url" id="f_existing" placeholder="https://yoursite.com (leave blank if none)"/>
+    </div>
+  </div>
+
+  <!-- 03 -->
+  <div class="section">
+    <div class="sec-header">
+      <span class="sec-num">03</span>
+      <span class="sec-title">Target Audience</span>
+    </div>
+    <div class="two-col">
+      <div class="field">
+        <label class="field-label">Primary Age Group</label>
+        <select id="f_age">
+          <option value="">Select...</option>
+          <option>Under 18</option><option>18–25</option><option>25–35</option>
+          <option>35–50</option><option>50+</option><option>All ages</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">Geographic Target</label>
+        <select id="f_geo">
+          <option value="">Select...</option>
+          <option>Local (City/State)</option><option>National (India)</option>
+          <option>Global</option><option>Specific Country</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Describe your ideal customer</label>
+      <textarea id="f_audience" placeholder="Who are they? What problem are they solving? What motivates them?"></textarea>
+    </div>
+    <div class="field">
+      <label class="field-label">Industry / Niche</label>
+      <input type="text" id="f_industry" placeholder="e.g. Fashion, Healthcare, SaaS, Real Estate..."/>
+    </div>
+  </div>
+
+  <!-- 04 -->
+  <div class="section">
+    <div class="sec-header">
+      <span class="sec-num">04</span>
+      <span class="sec-title">Design Preferences</span>
+    </div>
+    <div class="field">
+      <label class="field-label">Design style / vibe</label>
+      <div class="check-grid" id="cg_style">
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Modern &amp; Minimal</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Bold &amp; Creative</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Corporate &amp; Clean</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Playful &amp; Fun</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Elegant &amp; Luxury</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Dark / Techy</span></div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="field">
+        <label class="field-label">Preferred color palette</label>
+        <input type="text" id="f_colors" placeholder="e.g. Dark &amp; minimal, Blue &amp; white..."/>
+      </div>
+      <div class="field">
+        <label class="field-label">Do you have a logo?</label>
+        <div class="pill-row" id="rg_logo">
+          <div class="pill" onclick="rSel(this,'rg_logo')">Yes, ready</div>
+          <div class="pill" onclick="rSel(this,'rg_logo')">Need one</div>
+          <div class="pill" onclick="rSel(this,'rg_logo')">Not sure</div>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Inspiration websites (URLs)</label>
+      <textarea id="f_inspiration" placeholder="Paste 1–3 URLs of websites whose design you like..."></textarea>
+      <p class="field-hint">// helps me nail the aesthetic direction</p>
+    </div>
+  </div>
+
+  <!-- 05 -->
+  <div class="section">
+    <div class="sec-header">
+      <span class="sec-num">05</span>
+      <span class="sec-title">Features &amp; Functionality</span>
+    </div>
+    <div class="field">
+      <label class="field-label">Select all features you need</label>
+      <div class="check-grid" id="cg_features">
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Contact Form</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Live Chat</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Newsletter Signup</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Blog / Articles</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Photo Gallery</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Video Section</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Booking System</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Payment Gateway</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">User Login</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Admin Dashboard</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">SEO Optimization</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Social Media</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Multi-language</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">E-Commerce / Shop</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">AI Chatbot</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">API Integration</span></div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Any custom features?</label>
+      <textarea id="f_custom" placeholder="Describe anything specific not listed above..."></textarea>
+    </div>
+  </div>
+
+  <!-- 06 -->
+  <div class="section">
+    <div class="sec-header">
+      <span class="sec-num">06</span>
+      <span class="sec-title">Content &amp; Pages</span>
+    </div>
+    <div class="field">
+      <label class="field-label">Pages needed</label>
+      <div class="check-grid" id="cg_pages">
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Home</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">About Us</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Services</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Portfolio / Work</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Pricing</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Blog</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Testimonials</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">FAQ</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Contact</span></div>
+        <div class="chk" onclick="cTog(this)"><div class="chk-box">✓</div><span class="chk-lbl">Privacy Policy</span></div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Who provides the content?</label>
+      <div class="pill-row" id="rg_content">
+        <div class="pill" onclick="rSel(this,'rg_content')">I'll provide everything</div>
+        <div class="pill" onclick="rSel(this,'rg_content')">Need help with writing</div>
+        <div class="pill" onclick="rSel(this,'rg_content')">Need stock images too</div>
+        <div class="pill" onclick="rSel(this,'rg_content')">Need full content help</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 -->
+  <div class="section">
+    <div class="sec-header">
+      <span class="sec-num">07</span>
+      <span class="sec-title">Technical Details</span>
+    </div>
+    <div class="two-col">
+      <div class="field">
+        <label class="field-label">Domain name?</label>
+        <div class="pill-row" id="rg_domain">
+          <div class="pill" onclick="rSel(this,'rg_domain')">Yes</div>
+          <div class="pill" onclick="rSel(this,'rg_domain')">No</div>
+          <div class="pill" onclick="rSel(this,'rg_domain')">Not sure</div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Web hosting?</label>
+        <div class="pill-row" id="rg_hosting">
+          <div class="pill" onclick="rSel(this,'rg_hosting')">Yes</div>
+          <div class="pill" onclick="rSel(this,'rg_hosting')">No</div>
+          <div class="pill" onclick="rSel(this,'rg_hosting')">Not sure</div>
+        </div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="field">
+        <label class="field-label">Domain (if any)</label>
+        <input type="text" id="f_domain" placeholder="www.yourbusiness.com"/>
+      </div>
+      <div class="field">
+        <label class="field-label">Preferred tech / platform</label>
+        <select id="f_tech">
+          <option value="">Open to suggestion</option>
+          <option>React / Next.js</option>
+          <option>WordPress</option>
+          <option>Webflow</option>
+          <option>Custom HTML/CSS/JS</option>
+          <option>No preference</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Device priority</label>
+      <div class="pill-row" id="rg_device">
+        <div class="pill" onclick="rSel(this,'rg_device')">Mobile First</div>
+        <div class="pill" onclick="rSel(this,'rg_device')">Desktop First</div>
+        <div class="pill" onclick="rSel(this,'rg_device')">Both equally</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08 -->
+  <div class="section">
+    <div class="sec-header">
+      <span class="sec-num">08</span>
+      <span class="sec-title">Timeline &amp; Budget</span>
+    </div>
+    <div class="field">
+      <label class="field-label">Expected timeline</label>
+      <div class="pill-row" id="rg_timeline">
+        <div class="pill" onclick="rSel(this,'rg_timeline')">ASAP (1–2 wks)</div>
+        <div class="pill" onclick="rSel(this,'rg_timeline')">Standard (3–4 wks)</div>
+        <div class="pill" onclick="rSel(this,'rg_timeline')">Flexible (1–2 mo)</div>
+        <div class="pill" onclick="rSel(this,'rg_timeline')">Not sure yet</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="field">
+        <label class="field-label">Start date</label>
+        <input type="text" id="f_start" placeholder="e.g. May 2025"/>
+      </div>
+      <div class="field">
+        <label class="field-label">Target launch date</label>
+        <input type="text" id="f_launch" placeholder="e.g. June 2025"/>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Budget range (INR)</label>
+      <div class="budget-grid" id="cg_budget">
+        <div class="chk" onclick="cSingle(this,'cg_budget')"><div class="chk-box">✓</div><span class="chk-lbl">Under ₹10K</span></div>
+        <div class="chk" onclick="cSingle(this,'cg_budget')"><div class="chk-box">✓</div><span class="chk-lbl">₹10K – ₹30K</span></div>
+        <div class="chk" onclick="cSingle(this,'cg_budget')"><div class="chk-box">✓</div><span class="chk-lbl">₹30K – ₹70K</span></div>
+        <div class="chk" onclick="cSingle(this,'cg_budget')"><div class="chk-box">✓</div><span class="chk-lbl">₹70K – ₹1.5L</span></div>
+        <div class="chk" onclick="cSingle(this,'cg_budget')"><div class="chk-box">✓</div><span class="chk-lbl">₹1.5L+</span></div>
+        <div class="chk" onclick="cSingle(this,'cg_budget')"><div class="chk-box">✓</div><span class="chk-lbl">Prefer to discuss</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 09 -->
+  <div class="section">
+    <div class="sec-header">
+      <span class="sec-num">09</span>
+      <span class="sec-title">Anything Else?</span>
+    </div>
+    <div class="field">
+      <label class="field-label">Additional notes, ideas, or questions</label>
+      <textarea id="f_notes" style="min-height:110px" placeholder="Share anything else — ideas, references, concerns, or questions..."></textarea>
+    </div>
+    <div class="field">
+      <label class="field-label">How did you find me?</label>
+      <div class="pill-row" id="rg_source">
+        <div class="pill" onclick="rSel(this,'rg_source')">LinkedIn</div>
+        <div class="pill" onclick="rSel(this,'rg_source')">Referral</div>
+        <div class="pill" onclick="rSel(this,'rg_source')">Google</div>
+        <div class="pill" onclick="rSel(this,'rg_source')">Portfolio site</div>
+        <div class="pill" onclick="rSel(this,'rg_source')">Other</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-area">
+    <button class="btn" id="submitBtn" onclick="submit()">
+      Submit Requirements <span class="btn-arrow">→</span>
+    </button>
+    <p class="submit-note">// responses saved to Google Sheets + emailed to hitesh.ahuja2293@gmail.com</p>
+  </div>
+
+  </div><!-- /formBody -->
+
+  <!-- SUCCESS -->
+  <div class="success" id="successScreen">
+    <div class="success-icon">✓</div>
+    <h2>Submitted.</h2>
+    <p>Got it. I'll review your requirements and get back to you within 24 hours to discuss the next steps.</p>
+    <a href="https://hitesh-portfolio-website.vercel.app" target="_blank">View portfolio while you wait ↗</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-left">Hitesh Ahuja</div>
+    <div class="footer-right">
+      Full Stack Developer &nbsp;·&nbsp;
+      <a href="https://hitesh-portfolio-website.vercel.app" target="_blank">hitesh-portfolio-website.vercel.app</a>
+    </div>
+  </footer>
+
+</div><!-- /wrap -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─────────────────────────────────────────────────
+// CONFIG — replace these after setup
+// ─────────────────────────────────────────────────
+const FORMSPREE_ID  = 'YOUR_FORMSPREE_ID';   // e.g. 'xyzabc12'
+const SHEETS_URL    = 'YOUR_APPS_SCRIPT_URL'; // Apps Script web app URL
+
+// ─────────────────────────────────────────────────
+// SCROLL REVEAL
+// ─────────────────────────────────────────────────
+const io = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 50);
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.06 });
+document.querySelectorAll('.section').forEach(s => io.observe(s));
+
+// ─────────────────────────────────────────────────
+// INTERACTION
+// ─────────────────────────────────────────────────
+function cTog(el) { el.classList.toggle('on'); tick(); }
+function cSingle(el, id) {
+  document.getElementById(id).querySelectorAll('.chk').forEach(c => c.classList.remove('on'));
+  el.classList.add('on'); tick();
+}
+function rSel(el, id) {
+  document.querySelectorAll('#' + id + ' .pill').forEach(p => p.classList.remove('on'));
+  el.classList.add('on'); tick();
+}
+
+function gChecked(id) {
+  return [...document.querySelectorAll('#' + id + ' .chk.on')]
+    .map(e => e.querySelector('.chk-lbl').textContent).join(', ');
+}
+function gRadio(id) {
+  const s = document.querySelector('#' + id + ' .pill.on');
+  return s ? s.textContent.trim() : '';
+}
+
+function tick() {
+  const inputs = document.querySelectorAll('input[type=text],input[type=email],textarea');
+  let filled = 0;
+  inputs.forEach(i => { if (i.value.trim()) filled++; });
+  const selected = document.querySelectorAll('.chk.on,.pill.on').length;
+  const pct = Math.min(100, Math.round(((filled + Math.min(selected, 12)) / (inputs.length + 12)) * 100));
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('pct').textContent = pct + '%';
+}
+
+// ─────────────────────────────────────────────────
+// TOAST
+// ─────────────────────────────────────────────────
+function toast(msg, err = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (err ? ' err' : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ─────────────────────────────────────────────────
+// SUBMIT
+// ─────────────────────────────────────────────────
+async function submit() {
+  const name     = document.getElementById('f_name').value.trim();
+  const email    = document.getElementById('f_email').value.trim();
+  const business = document.getElementById('f_business').value.trim();
+  const goal     = document.getElementById('f_goal').value.trim();
+
+  if (!name || !email || !business || !goal) {
+    toast('Please fill in Name, Email, Business & Goal first.', true);
+    document.getElementById('s1').scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = 'Submitting... <span class="btn-arrow">↻</span>';
+
+  const data = {
+    _subject:          'New Website Enquiry from ' + name,
+    name, email,
+    company:           document.getElementById('f_company').value,
+    phone:             document.getElementById('f_phone').value,
+    preferred_contact: gRadio('rg_contact'),
+    business, goal,
+    site_type:         gChecked('cg_sitetype'),
+    existing_website:  document.getElementById('f_existing').value,
+    age_group:         document.getElementById('f_age').value,
+    geography:         document.getElementById('f_geo').value,
+    ideal_customer:    document.getElementById('f_audience').value,
+    industry:          document.getElementById('f_industry').value,
+    design_style:      gChecked('cg_style'),
+    color_palette:     document.getElementById('f_colors').value,
+    has_logo:          gRadio('rg_logo'),
+    inspiration:       document.getElementById('f_inspiration').value,
+    features:          gChecked('cg_features'),
+    custom_features:   document.getElementById('f_custom').value,
+    pages:             gChecked('cg_pages'),
+    content_provider:  gRadio('rg_content'),
+    has_domain:        gRadio('rg_domain'),
+    has_hosting:       gRadio('rg_hosting'),
+    domain_name:       document.getElementById('f_domain').value,
+    tech_preference:   document.getElementById('f_tech').value,
+    device_priority:   gRadio('rg_device'),
+    timeline:          gRadio('rg_timeline'),
+    start_date:        document.getElementById('f_start').value,
+    launch_date:       document.getElementById('f_launch').value,
+    budget:            gChecked('cg_budget'),
+    notes:             document.getElementById('f_notes').value,
+    referral_source:   gRadio('rg_source'),
+  };
+
+  // 1. Formspree → email
+  if (FORMSPREE_ID !== 'YOUR_FORMSPREE_ID') {
+    try {
+      await fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    } catch (e) { console.error('Formspree:', e); }
+  }
+
+  // 2. Apps Script → Google Sheets
+  if (SHEETS_URL !== 'YOUR_APPS_SCRIPT_URL') {
+    try {
+      await fetch(SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    } catch (e) { console.error('Sheets:', e); }
+  }
+
+  // Show success
+  document.getElementById('formBody').style.display = 'none';
+  document.getElementById('successScreen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
